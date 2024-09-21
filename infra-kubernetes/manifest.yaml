@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: fiap-postech-hackathon-app-agendamentos
-          image: 673847524989.dkr.ecr.us-east-1.amazonaws.com/fiap_postech_fastfood_cliente:${IMAGE_TAG} #pegar uri do repositório ECR
+          image: 419623569149.dkr.ecr.us-east-1.amazonaws.com/fiap_postech_hackathon_app_agendamentos:${IMAGE_TAG} #pegar uri do repositório ECR
           imagePullPolicy: Always
           resources:
             requests:

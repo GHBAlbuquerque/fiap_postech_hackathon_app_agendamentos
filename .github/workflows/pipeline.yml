@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REPOSITORY: fiap_postech_fastfood_cliente
+  ECR_REPOSITORY: fiap_postech_hackathon_app_agendamentos
   EKS_CLUSTER_NAME: eks_cluster_fiap_postech
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
