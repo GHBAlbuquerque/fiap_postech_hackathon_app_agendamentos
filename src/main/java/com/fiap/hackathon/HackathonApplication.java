@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@OpenAPIDefinition(info = @Info(title = "Fast Food FIAP", description = "Microsserviço de gerenciamento de Clientes realizado para a Pós-Graduação de Arquitetura de Sistemas da FIAP", version = "v1"))
+@OpenAPIDefinition(info = @Info(title = "Hackathon PosTech FIAP - Agendamentos", description = "Microsserviço de gerenciamento de Agendamentos realizado para o Hackathon da Pós-Graduação de Arquitetura de Sistemas da FIAP", version = "v1"))
 public class HackathonApplication {
 
     public static void main(String[] args) {
