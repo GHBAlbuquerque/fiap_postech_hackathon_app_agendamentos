@@ -30,11 +30,13 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         try {
             appointment.isValid();
 
-            if(!gateway.isDoctorAvailable(doctorId, appointment) || !gateway.isScheduleAvailable(appointment))
+            if (Boolean.FALSE.equals(gateway.isDoctorAvailable(doctorId, appointment)) ||
+                    Boolean.FALSE.equals(gateway.isScheduleAvailable(appointment))) {
                 throw new AppointmentConflictException(
                         ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
                         "Selected Date and Time is already taken. Please select another date/time."
                 );
+            }
 
 
             final var savedAppointment = gateway.create(appointment);
@@ -55,7 +57,7 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             logger.error("APPOINTMENT creation failed.");
 
             throw new CreateEntityException(
-                    ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
+                    ExceptionCodes.APPOINTMENT_07_APPOINTMENT_CREATION,
                     ex.getMessage()
             );
         }
