@@ -1,7 +1,7 @@
 package com.fiap.hackathon.core.entity;
 
-import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.exceptions.custom.AppointmentCreationException;
+import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

@@ -2,7 +2,6 @@ package com.fiap.hackathon.common.interfaces.datasources;
 
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
-import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
 import jakarta.annotation.Nullable;
 

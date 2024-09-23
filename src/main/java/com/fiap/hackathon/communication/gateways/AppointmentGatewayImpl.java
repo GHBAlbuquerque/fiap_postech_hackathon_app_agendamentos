@@ -1,13 +1,10 @@
 package com.fiap.hackathon.communication.gateways;
 
-import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
-import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
-import com.fiap.hackathon.core.entity.TimeSlotsEnum;
 import com.fiap.hackathon.external.services.users.UsersHTTPClient;
 
 import java.time.LocalDate;
