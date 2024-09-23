@@ -1,6 +1,7 @@
 package com.fiap.hackathon.common.exceptions;
 
 import com.fiap.hackathon.common.exceptions.custom.AlreadyRegisteredException;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
@@ -57,6 +58,21 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         final var message = new ExceptionDetails(
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
                 "Couldn't create entity on database. Try again with different values.",
+                ex.getCode().name(),
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getErrors());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {AppointmentConflictException.class})
+    public ResponseEntity<ExceptionDetails> resourceException(AppointmentConflictException ex, WebRequest request) {
+
+        final var message = new ExceptionDetails(
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+                "Couldn't schedule appointment. Please try again with a diffent day and/or timeslot.",
                 ex.getCode().name(),
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),

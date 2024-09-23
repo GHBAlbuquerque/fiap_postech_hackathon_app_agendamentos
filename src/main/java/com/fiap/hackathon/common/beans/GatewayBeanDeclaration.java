@@ -6,6 +6,7 @@ import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.communication.gateways.AppointmentGatewayImpl;
 import com.fiap.hackathon.communication.gateways.NotificationGatewayImpl;
+import com.fiap.hackathon.external.services.users.UsersHTTPClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class GatewayBeanDeclaration {
 
     @Bean
-    public AppointmentGateway AppointmentGateway(AppointmentRepository repository) {
-        return new AppointmentGatewayImpl(repository);
+    public AppointmentGateway AppointmentGateway(AppointmentRepository repository, UsersHTTPClient usersHTTPClient) {
+        return new AppointmentGatewayImpl(repository, usersHTTPClient);
     }
     
 

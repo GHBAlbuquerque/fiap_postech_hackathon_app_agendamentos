@@ -25,16 +25,10 @@ spec:
               cpu: "500m"  # Limite de CPU
               memory: "1Gi"
           env:
-            - name: DB_HOST
-              value: "jdbc:mysql://fiap-postech-db.c7yobqll710z.us-east-1.rds.amazonaws.com:3306/clientes_db"
-            - name: DB_USER
-              value: "admin"
-            - name: DB_PASSWORD
-              value: "password"
-            - name: COGNITO_ID
-              value: "5knk8gad7neb3h7n91rpcigicu"
             - name: ACCOUNT_ID
-              value: "673847524989"
+              value: "419623569149"
+            - name: MS_USUARIO_URL
+              value: ""
           ports:
             - containerPort: 80
               protocol: TCP

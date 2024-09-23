@@ -3,6 +3,8 @@ package com.fiap.hackathon.communication.controllers;
 import com.fiap.hackathon.common.builders.AppointmentBuilder;
 import com.fiap.hackathon.common.dto.request.CreateAppointmentRequest;
 import com.fiap.hackathon.common.dto.response.GetAppointmentResponse;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
+import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
@@ -45,7 +47,7 @@ public class AppointmentController {
     @PostMapping(value = "", produces = "application/json", consumes = "application/json")
     public ResponseEntity<GetAppointmentResponse> createAppointment(
             @RequestBody @Valid CreateAppointmentRequest request
-    ) {
+    ) throws AppointmentConflictException, CreateEntityException {
 
         final var appointment = AppointmentBuilder.fromRequestToDomain(request);
         final var result = useCase.create(appointment, gateway);
