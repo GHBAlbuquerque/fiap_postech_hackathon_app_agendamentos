@@ -2,6 +2,7 @@ package com.fiap.hackathon.communication.gateways;
 
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
+import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
@@ -89,6 +90,24 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
                 .filter(ap -> timeslot.equals(ap.getTimeslot()))
                 .findAny()
                 .isEmpty();
+    }
+
+    @Override
+    public Boolean doesPatientExist(String patientId) throws EntitySearchException {
+        try {
+            return usersHTTPClient.getPatientById(patientId, MS_USER, CONTENT_TYPE).getBody().getIsActive();
+        } catch (Exception ex) {
+            throw new EntitySearchException(ExceptionCodes.APPOINTMENT_03_DOCTOR_NOT_FOUND, "Patient not found.");
+        }
+    }
+
+    @Override
+    public Boolean doesDoctorExist(String doctorId) throws EntitySearchException {
+        try {
+            return usersHTTPClient.getDoctorById(doctorId, MS_USER, CONTENT_TYPE).getBody().getIsActive();
+        } catch (Exception ex) {
+            throw new EntitySearchException(ExceptionCodes.APPOINTMENT_04_PATIENT_NOT_FOUND, "Doctor not found.");
+        }
     }
 
 }

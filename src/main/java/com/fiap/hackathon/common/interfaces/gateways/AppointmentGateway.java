@@ -24,4 +24,8 @@ public interface AppointmentGateway {
 
     Boolean isScheduleAvailable(Appointment appointment) throws AppointmentConflictException, EntitySearchException;
 
+    Boolean doesPatientExist(String patientId) throws EntitySearchException;
+
+    Boolean doesDoctorExist(String doctorId) throws EntitySearchException;
+
 }

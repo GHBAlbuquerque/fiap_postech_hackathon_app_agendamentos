@@ -23,7 +23,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     private static final String PATIENT_ID_INDEX = "AppointmentPatientIdIndex";
     private static final String DOCTOR_ID_INDEX = "AppointmentDoctorIdIndex";
     private static final String DOCTOR_ID_DATE_INDEX = "AppointmentDoctorIdDateIndex";
-    private static final String ATTRIBUTES = "id, patientId, doctorId, date, timeslot, createdAt";
+    private static final String ATTRIBUTES = "id, patientId, doctorId, scheduledDate, timeslot, createdAt";
 
     private final DynamoDbClient dynamoDbClient;
 
@@ -92,7 +92,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         try {
             final var queryRequest = QueryRequest.builder()
                     .tableName(TABLE_NAME)
-                    .indexName(DOCTOR_ID_INDEX)
+                    .indexName(PATIENT_ID_INDEX)
                     .keyConditionExpression("patientId = :val")
                     .projectionExpression(ATTRIBUTES)
                     .expressionAttributeValues(expressionAttributeValues)
@@ -118,7 +118,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         try {
             final var queryRequest = QueryRequest.builder()
                     .tableName(TABLE_NAME)
-                    .indexName(PATIENT_ID_INDEX)
+                    .indexName(DOCTOR_ID_INDEX)
                     .keyConditionExpression("doctorId = :val")
                     .projectionExpression(ATTRIBUTES)
                     .expressionAttributeValues(expressionAttributeValues)
@@ -140,16 +140,16 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date) throws EntitySearchException {
         final var expressionAttributeValues = new HashMap<String, AttributeValue>();
         expressionAttributeValues.put(":val", AttributeValue.builder().s(doctorId).build());
-        expressionAttributeValues.put(":date", AttributeValue.builder().s(date.toString()).build());
+        expressionAttributeValues.put(":scheduledDate", AttributeValue.builder().s(date.toString()).build());
 
         try {
             final var queryRequest = QueryRequest.builder()
                     .tableName(TABLE_NAME)
                     .indexName(DOCTOR_ID_DATE_INDEX)
-                    .keyConditionExpression("doctorId = :val and date = :date")
+                    .keyConditionExpression("doctorId = :val and scheduledDate = :scheduledDate")
                     .projectionExpression(ATTRIBUTES)
                     .expressionAttributeValues(expressionAttributeValues)
-                    .consistentRead(true)
+                    //.consistentRead(true)
                     .build();
 
             final var result = dynamoDbClient.query(queryRequest);
@@ -175,7 +175,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
         itemValues.put("doctorId", AttributeValue.builder().s(appointment.getDoctorId()).build());
         itemValues.put("patientId", AttributeValue.builder().s(appointment.getDoctorId()).build());
-        itemValues.put("date", AttributeValue.builder().s(appointment.getDoctorId()).build());
+        itemValues.put("scheduledDate", AttributeValue.builder().s(appointment.getDoctorId()).build());
         itemValues.put("timeslot", AttributeValue.builder().s(appointment.getDoctorId()).build());
         itemValues.put("createdAt", AttributeValue.builder().s(appointment.getDoctorId()).build());
 
@@ -187,7 +187,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 .setId(item.get("id").s())
                 .setDoctorId(item.get("doctorId").s())
                 .setPatientId(item.get("patientId").s())
-                .setDate(LocalDate.parse(item.get("date").s()))
+                .setDate(LocalDate.parse(item.get("scheduledDate").s()))
                 .setTimeslot(item.get("timeslot").s())
                 .setCreatedAt(LocalDateTime.parse(item.get("createdAt").s()));
     }

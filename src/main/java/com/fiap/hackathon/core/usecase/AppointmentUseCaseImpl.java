@@ -29,16 +29,11 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         );
 
         try {
+            logger.info("Validating request.");
+
             appointment.isValid();
-
-            if (Boolean.FALSE.equals(gateway.isDoctorAvailable(doctorId, appointment)) ||
-                    Boolean.FALSE.equals(gateway.isScheduleAvailable(appointment))) {
-                throw new AppointmentConflictException(
-                        ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
-                        "Selected Date and Time is already taken. Please select another date/time."
-                );
-            }
-
+            areUsersValid(doctorId, patientId, gateway);
+            isSchedulable(appointment, doctorId, gateway);
 
             final var savedAppointment = gateway.create(appointment);
 
@@ -47,7 +42,7 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             return savedAppointment;
 
         } catch (AppointmentConflictException ex) {
-            logger.error("APPOINTMENT creation failed.");
+            logger.error("APPOINTMENT creation failed. Error: {}", ex.getMessage());
 
             throw new AppointmentConflictException(
                     ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
@@ -55,11 +50,32 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             );
 
         } catch (Exception ex) {
-            logger.error("APPOINTMENT creation failed.");
+            logger.error("APPOINTMENT creation failed. Error: {}", ex.getMessage());
 
             throw new CreateEntityException(
                     ExceptionCodes.APPOINTMENT_07_APPOINTMENT_CREATION,
                     ex.getMessage()
+            );
+        }
+    }
+
+    private static void areUsersValid(String doctorId, String patientId, AppointmentGateway gateway) throws EntitySearchException {
+        logger.info("Checking patient and doctor existence on database.");
+
+        gateway.doesDoctorExist(doctorId);
+        gateway.doesPatientExist(patientId);
+    }
+
+    private static void isSchedulable(Appointment appointment, String doctorId, AppointmentGateway gateway)
+            throws AppointmentConflictException, EntitySearchException {
+        logger.info("Validating availability for requested appointment.");
+
+        if (Boolean.FALSE.equals(gateway.isDoctorAvailable(doctorId, appointment)) ||
+                Boolean.FALSE.equals(gateway.isScheduleAvailable(appointment))) {
+
+            throw new AppointmentConflictException(
+                    ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
+                    "Selected Date and Time is already taken. Please select another date/time."
             );
         }
     }
