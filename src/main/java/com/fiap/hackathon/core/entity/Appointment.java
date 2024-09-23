@@ -1,4 +1,4 @@
-package com.fiap.hackathon.common.dto.response;
+package com.fiap.hackathon.core.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +7,10 @@ import lombok.experimental.Accessors;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
-public class GetAppointmentResponse {
+public class Appointment {
 
     private String id;
     private String doctorId;
@@ -18,4 +18,5 @@ public class GetAppointmentResponse {
     private LocalDate date;
     private String timeslot;
     private LocalDateTime createdAt;
+
 }

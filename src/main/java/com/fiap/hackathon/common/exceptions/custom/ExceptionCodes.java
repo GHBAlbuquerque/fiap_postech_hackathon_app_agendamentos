@@ -1,0 +1,15 @@
+package com.fiap.hackathon.common.exceptions.custom;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public enum ExceptionCodes {
+
+    APPOINTMENT_01_NOT_FOUND,
+    APPOINTMENT_02_ALREADY_REGISTERED,
+    APPOINTMENT_03_DOCTOR_NOT_FOUND,
+    APPOINTMENT_04_PATIENT_NOT_FOUND,
+    APPOINTMENT_05_APPOINTMENT_CONFLICT,
+    APPOINTMENT_06_INVALID_SEARCH,
+    APPOINTMENT_06_NOTIFICATION_FAILED
+}
