@@ -18,8 +18,8 @@ public interface AppointmentGateway {
 
     List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date);
     
-    Boolean validateDoctorAvailability(String doctorId, Appointment appointment);
+    Boolean isDoctorAvailable(String doctorId, Appointment appointment);
 
-    Boolean validateScheduleAvailability(Appointment appointment) throws AppointmentConflictException;
+    Boolean isScheduleAvailable(Appointment appointment) throws AppointmentConflictException;
 
 }

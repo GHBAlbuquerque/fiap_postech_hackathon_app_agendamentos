@@ -28,8 +28,14 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         );
 
         try {
-            gateway.validateDoctorAvailability(doctorId, appointment);
-            gateway.validateScheduleAvailability(appointment);
+            appointment.isValid();
+
+            if(!gateway.isDoctorAvailable(doctorId, appointment) || !gateway.isScheduleAvailable(appointment))
+                throw new AppointmentConflictException(
+                        ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
+                        "Selected Date and Time is already taken. Please select another date/time."
+                );
+
 
             final var savedAppointment = gateway.create(appointment);
 

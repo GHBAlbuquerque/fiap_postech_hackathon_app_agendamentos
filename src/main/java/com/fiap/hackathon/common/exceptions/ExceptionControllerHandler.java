@@ -1,9 +1,6 @@
 package com.fiap.hackathon.common.exceptions;
 
-import com.fiap.hackathon.common.exceptions.custom.AlreadyRegisteredException;
-import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
-import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
-import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
+import com.fiap.hackathon.common.exceptions.custom.*;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,6 +78,22 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {AppointmentCreationException.class})
+    public ResponseEntity<ExceptionDetails> resourceException(AppointmentCreationException ex, WebRequest request) {
+
+        final var message = new ExceptionDetails(
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+                "Couldn't create timetable. Try again with different values.",
+                ex.getCode().name(),
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getErrors());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUncaughtException(Exception ex, WebRequest request) {

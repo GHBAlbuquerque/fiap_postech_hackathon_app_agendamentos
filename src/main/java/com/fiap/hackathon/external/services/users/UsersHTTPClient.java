@@ -1,6 +1,7 @@
 package com.fiap.hackathon.external.services.users;
 
 import com.fiap.hackathon.external.services.users.dtos.Doctor;
+import com.fiap.hackathon.external.services.users.dtos.DoctorTimetable;
 import com.fiap.hackathon.external.services.users.dtos.Patient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ public interface UsersHTTPClient {
     );
 
     @GetMapping(value = "/doctors/{id}/timetable}")
-    ResponseEntity<Patient> getDoctorTimetable(
+    ResponseEntity<DoctorTimetable> getDoctorTimetable(
             @PathVariable("id") final String doctorId,
             @RequestHeader("microsservice") final String microsservice,
             @RequestHeader("Content-Type") final String contentType
     );
 
     @GetMapping(value = "/patients/{id}")
-    ResponseEntity<Doctor> getPatientById(
+    ResponseEntity<Patient> getPatientById(
             @PathVariable("id") final String patientId,
             @RequestHeader("microsservice") final String microsservice,
             @RequestHeader("Content-Type") final String contentType
