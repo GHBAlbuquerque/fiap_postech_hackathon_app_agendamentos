@@ -1,6 +1,8 @@
 package com.fiap.hackathon.communication.gateways;
 
 import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
+import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
+import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
@@ -25,27 +27,27 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
     }
 
     @Override
-    public Appointment create(Appointment appointment) {
+    public Appointment create(Appointment appointment) throws CreateEntityException {
         return repository.create(appointment);
     }
 
     @Override
-    public Appointment getAppointmentById(String id) {
+    public Appointment getAppointmentById(String id) throws EntitySearchException {
         return repository.getAppointmentById(id);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(String patientId) {
+    public List<Appointment> getAppointmentsByPatient(String patientId) throws EntitySearchException {
         return repository.getAppointmentsByPatient(patientId);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctor(String doctorId) {
+    public List<Appointment> getAppointmentsByDoctor(String doctorId) throws EntitySearchException {
         return repository.getAppointmentsByDoctor(doctorId);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date) {
+    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date) throws EntitySearchException {
         return repository.getAppointmentsByDoctorAndDate(doctorId, date);
     }
 
@@ -79,7 +81,7 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
     }
 
     @Override
-    public Boolean isScheduleAvailable(Appointment appointment) throws AppointmentConflictException {
+    public Boolean isScheduleAvailable(Appointment appointment) throws EntitySearchException {
         final var doctorId = appointment.getDoctorId();
         final var date = appointment.getDate();
         final var timeslot = appointment.getTimeslot();

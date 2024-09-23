@@ -2,6 +2,7 @@ package com.fiap.hackathon.common.interfaces.usecase;
 
 import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
+import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
 import jakarta.annotation.Nullable;
@@ -13,8 +14,8 @@ public interface AppointmentUseCase {
 
     Appointment create(Appointment appointment, AppointmentGateway gateway) throws CreateEntityException, AppointmentConflictException;
 
-    List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) throws EntitySearchException;
 
-    List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) throws EntitySearchException;
 
 }

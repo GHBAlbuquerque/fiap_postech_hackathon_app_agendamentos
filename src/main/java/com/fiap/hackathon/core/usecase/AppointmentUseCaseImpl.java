@@ -2,6 +2,7 @@ package com.fiap.hackathon.core.usecase;
 
 import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
+import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
@@ -64,14 +65,14 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) throws EntitySearchException {
         logger.info("Getting APPOINTMENTS for patient [patientId '{}'].", patientId);
 
         return gateway.getAppointmentsByPatient(patientId);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) throws EntitySearchException {
         logger.info("Getting APPOINTMENTS for doctor [doctorId '{}'].", doctorId);
 
         if (date != null)
