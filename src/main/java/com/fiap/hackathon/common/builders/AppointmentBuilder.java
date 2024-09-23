@@ -4,6 +4,8 @@ import com.fiap.hackathon.common.dto.request.CreateAppointmentRequest;
 import com.fiap.hackathon.common.dto.response.GetAppointmentResponse;
 import com.fiap.hackathon.core.entity.Appointment;
 
+import java.time.LocalDateTime;
+
 public class AppointmentBuilder {
 
     public static Appointment fromRequestToDomain(CreateAppointmentRequest request) {
@@ -11,7 +13,8 @@ public class AppointmentBuilder {
                 .setDoctorId(request.getDoctorId())
                 .setPatientId(request.getPatientId())
                 .setDate(request.getDate())
-                .setTimeslot(request.getTimeslot());
+                .setTimeslot(request.getTimeslot())
+                .setCreatedAt(LocalDateTime.now());
     }
 
     public static GetAppointmentResponse fromDomainToResponse(Appointment appointment) {

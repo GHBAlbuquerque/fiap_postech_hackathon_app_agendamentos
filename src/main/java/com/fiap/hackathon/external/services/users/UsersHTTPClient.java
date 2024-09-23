@@ -22,7 +22,7 @@ public interface UsersHTTPClient {
             @RequestHeader("Content-Type") final String contentType
     );
 
-    @GetMapping(value = "/doctors/{id}/timetable}")
+    @GetMapping(value = "/doctors/{id}/timetable")
     ResponseEntity<DoctorTimetable> getDoctorTimetable(
             @PathVariable("id") final String doctorId,
             @RequestHeader("microsservice") final String microsservice,

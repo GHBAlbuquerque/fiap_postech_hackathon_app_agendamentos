@@ -64,6 +64,8 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
         gateway.doesDoctorExist(doctorId);
         gateway.doesPatientExist(patientId);
+
+        logger.info("Validated.");
     }
 
     private static void isSchedulable(Appointment appointment, String doctorId, AppointmentGateway gateway)
@@ -78,6 +80,8 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
                     "Selected Date and Time is already taken. Please select another date/time."
             );
         }
+
+        logger.info("Validated.");
     }
 
     @Override
