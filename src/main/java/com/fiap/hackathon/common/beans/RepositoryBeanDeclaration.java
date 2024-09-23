@@ -11,6 +11,6 @@ public class RepositoryBeanDeclaration {
 
     @Bean
     public AppointmentRepository AppointmentRepository() {
-        return new AppointmentRepositoryImpl();
+        return new AppointmentRepositoryImpl(dynamoDbClient);
     }
 }

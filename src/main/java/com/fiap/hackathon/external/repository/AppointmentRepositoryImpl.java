@@ -2,8 +2,53 @@ package com.fiap.hackathon.external.repository;
 
 
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
+import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
+import com.fiap.hackathon.core.entity.Appointment;
+import jakarta.annotation.Nullable;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class AppointmentRepositoryImpl implements AppointmentRepository {
+
+    private static final String TABLE_NAME = "Appointment";
+    private static final String PATIENT_ID_INDEX = "AppointmentPatientIdIndex";
+    private static final String DOCTOR_ID_INDEX = "AppointmentDoctorIdIndex";
+    private static final String DOCTOR_ID_DATE_INDEX = "AppointmentDoctorIdDateIndex";
+    private static final String ATTRIBUTES = "id, patientId, doctorId, date, timeslot, createdAt";
+
+    private final DynamoDbClient dynamoDbClient;
+
+    public AppointmentRepositoryImpl(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
+    }
+
+
+    @Override
+    public Appointment create(Appointment appointment, AppointmentGateway gateway) {
+        return null;
+    }
+
+    @Override
+    public Appointment getAppointmentById(String id, AppointmentGateway gateway) {
+        return null;
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) {
+        return null;
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByDoctor(String doctorId, AppointmentGateway gateway) {
+        return null;
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) {
+        return null;
+    }
 
     /*
     private static final String TABLE_NAME = "Timetable";

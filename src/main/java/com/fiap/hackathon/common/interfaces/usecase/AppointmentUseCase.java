@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface AppointmentUseCase {
 
-    public Appointment create(Appointment appointment, AppointmentGateway gateway);
+    Appointment create(Appointment appointment, AppointmentGateway gateway);
 
-    public List<Appointment> getAppointmentsByPatient(String id, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway);
 
-    public List<Appointment> getAppointmentsByDoctor(String id, @Nullable LocalDate date, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway);
 }

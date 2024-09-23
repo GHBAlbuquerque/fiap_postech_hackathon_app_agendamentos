@@ -17,12 +17,12 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(String id, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) {
         return null;
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctor(String id, @Nullable LocalDate date, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) {
         return null;
     }
 
