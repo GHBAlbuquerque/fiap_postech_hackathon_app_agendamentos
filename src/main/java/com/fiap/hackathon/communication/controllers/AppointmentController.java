@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.fiap.hackathon.common.exceptions.custom.ExceptionCodes.APPOINTMENT_06_INVALID_SEARCH;
 
@@ -79,7 +78,7 @@ public class AppointmentController {
         if (patientId == null && doctorId == null)
             throw new EntitySearchException(
                     APPOINTMENT_06_INVALID_SEARCH,
-                    "Please inform either patientId or doctorId for search"
+                    "Please inform either patientId or doctorId for search."
             );
 
         if (patientId != null)
@@ -90,9 +89,11 @@ public class AppointmentController {
 
 
         return ResponseEntity.ok(
-                result.stream().map(
-                        AppointmentBuilder::fromDomainToResponse
-                ).collect(Collectors.toList())
+                result.stream()
+                        .map(
+                                AppointmentBuilder::fromDomainToResponse
+                        )
+                        .toList()
         );
     }
 

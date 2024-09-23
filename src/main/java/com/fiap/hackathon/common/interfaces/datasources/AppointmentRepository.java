@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface AppointmentRepository {
 
-    Appointment create(Appointment appointment, AppointmentGateway gateway);
+    Appointment create(Appointment appointment);
 
-    Appointment getAppointmentById(String id, AppointmentGateway gateway);
+    Appointment getAppointmentById(String id);
 
-    List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByPatient(String patientId);
 
-    List<Appointment> getAppointmentsByDoctor(String doctorId, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByDoctor(String doctorId);
 
-    List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway);
+    List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date);
 }

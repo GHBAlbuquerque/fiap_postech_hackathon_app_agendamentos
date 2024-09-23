@@ -28,7 +28,7 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         );
 
         try {
-            gateway.validateDoctorAvailability(doctorId);
+            gateway.validateDoctorAvailability(doctorId, appointment);
             gateway.validateScheduleAvailability(appointment);
 
             final var savedAppointment = gateway.create(appointment);
@@ -57,12 +57,19 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
     @Override
     public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) {
-        return null;
+        logger.info("Getting APPOINTMENTS for patient [patientId '{}'].", patientId);
+
+        return gateway.getAppointmentsByPatient(patientId);
     }
 
     @Override
     public List<Appointment> getAppointmentsByDoctor(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) {
-        return null;
+        logger.info("Getting APPOINTMENTS for doctor [doctorId '{}'].", doctorId);
+
+        if (date != null)
+            return gateway.getAppointmentsByDoctorAndDate(doctorId, date);
+
+        return gateway.getAppointmentsByDoctor(doctorId);
     }
 
 

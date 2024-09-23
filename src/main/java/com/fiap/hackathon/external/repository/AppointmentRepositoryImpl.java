@@ -24,29 +24,28 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         this.dynamoDbClient = dynamoDbClient;
     }
 
-
     @Override
-    public Appointment create(Appointment appointment, AppointmentGateway gateway) {
+    public Appointment create(Appointment appointment) {
         return null;
     }
 
     @Override
-    public Appointment getAppointmentById(String id, AppointmentGateway gateway) {
+    public Appointment getAppointmentById(String id) {
         return null;
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(String patientId, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByPatient(String patientId) {
         return null;
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctor(String doctorId, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByDoctor(String doctorId) {
         return null;
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date, AppointmentGateway gateway) {
+    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date) {
         return null;
     }
 

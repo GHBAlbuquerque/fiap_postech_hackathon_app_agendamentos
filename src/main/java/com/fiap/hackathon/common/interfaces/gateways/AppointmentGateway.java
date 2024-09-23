@@ -2,7 +2,6 @@ package com.fiap.hackathon.common.interfaces.gateways;
 
 import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.core.entity.Appointment;
-import jakarta.annotation.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +16,9 @@ public interface AppointmentGateway {
 
     List<Appointment> getAppointmentsByDoctor(String doctorId);
 
-    List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date);
+    List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date);
     
-    Boolean validateDoctorAvailability(String doctorId);
+    Boolean validateDoctorAvailability(String doctorId, Appointment appointment);
 
     Boolean validateScheduleAvailability(Appointment appointment) throws AppointmentConflictException;
 

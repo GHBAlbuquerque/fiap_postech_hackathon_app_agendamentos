@@ -5,49 +5,52 @@ import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
 import com.fiap.hackathon.external.services.users.UsersHTTPClient;
-import jakarta.annotation.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.fiap.hackathon.common.logging.Constants.CONTENT_TYPE;
+import static com.fiap.hackathon.common.logging.Constants.MS_USER;
+
 public class AppointmentGatewayImpl implements AppointmentGateway {
 
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentRepository repository;
     private final UsersHTTPClient usersHTTPClient;
 
-    public AppointmentGatewayImpl(AppointmentRepository appointmentRepository, UsersHTTPClient usersHTTPClient) {
-        this.appointmentRepository = appointmentRepository;
+    public AppointmentGatewayImpl(AppointmentRepository repository, UsersHTTPClient usersHTTPClient) {
+        this.repository = repository;
         this.usersHTTPClient = usersHTTPClient;
     }
 
-
     @Override
     public Appointment create(Appointment appointment) {
-        return null;
+        return repository.create(appointment);
     }
 
     @Override
     public Appointment getAppointmentById(String id) {
-        return null;
+        return repository.getAppointmentById(id);
     }
 
     @Override
     public List<Appointment> getAppointmentsByPatient(String patientId) {
-        return null;
+        return repository.getAppointmentsByPatient(patientId);
     }
 
     @Override
     public List<Appointment> getAppointmentsByDoctor(String doctorId) {
-        return null;
+        return repository.getAppointmentsByDoctor(doctorId);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, @Nullable LocalDate date) {
-        return null;
+    public List<Appointment> getAppointmentsByDoctorAndDate(String doctorId, LocalDate date) {
+        return repository.getAppointmentsByDoctorAndDate(doctorId, date);
     }
 
     @Override
-    public Boolean validateDoctorAvailability(String doctorId) {
+    public Boolean validateDoctorAvailability(String doctorId, Appointment appointment) {
+        final var doctorTimetable = usersHTTPClient.getDoctorTimetable(doctorId, MS_USER, CONTENT_TYPE);
+
         return null;
     }
 

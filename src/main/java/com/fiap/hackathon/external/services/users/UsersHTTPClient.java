@@ -16,22 +16,22 @@ public interface UsersHTTPClient {
 
     @GetMapping(value = "/doctors/{id}")
     ResponseEntity<Doctor> getDoctorById(
-            @PathVariable("id") final Long customerId,
-            @RequestHeader("microsservice") final String microsservico,
+            @PathVariable("id") final String doctorId,
+            @RequestHeader("microsservice") final String microsservice,
             @RequestHeader("Content-Type") final String contentType
     );
 
     @GetMapping(value = "/doctors/{id}/timetable}")
     ResponseEntity<Patient> getDoctorTimetable(
-            @PathVariable("id") final Long customerId,
-            @RequestHeader("microsservice") final String microsservico,
+            @PathVariable("id") final String doctorId,
+            @RequestHeader("microsservice") final String microsservice,
             @RequestHeader("Content-Type") final String contentType
     );
 
     @GetMapping(value = "/patients/{id}")
     ResponseEntity<Doctor> getPatientById(
-            @PathVariable("id") final Long customerId,
-            @RequestHeader("microsservice") final String microsservico,
+            @PathVariable("id") final String patientId,
+            @RequestHeader("microsservice") final String microsservice,
             @RequestHeader("Content-Type") final String contentType
     );
 }
