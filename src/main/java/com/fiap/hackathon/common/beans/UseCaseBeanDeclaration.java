@@ -1,7 +1,7 @@
 package com.fiap.hackathon.common.beans;
 
-import com.fiap.fastfood.common.interfaces.usecase.CustomerUseCase;
-import com.fiap.fastfood.core.usecase.CustomerUseCaseImpl;
+import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
+import com.fiap.hackathon.core.usecase.AppointmentUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class UseCaseBeanDeclaration {
 
     @Bean
-    public CustomerUseCase customerUseCase() {
-        return new CustomerUseCaseImpl();
+    public AppointmentUseCase AppointmentUseCase() {
+        return new AppointmentUseCaseImpl();
     }
 
 }
