@@ -46,13 +46,7 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
             logger.info("APPOINTMENT successfully created.");
 
-            new Thread(() -> {
-                try {
-                    notifyAppointmentCreation(savedAppointment, notificationGateway);
-                } catch (NotificationException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            notifyAppointmentCreation(savedAppointment, notificationGateway);
 
             return savedAppointment;
 
@@ -108,18 +102,20 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
     private void notifyAppointmentCreation(Appointment appointment, NotificationGateway notificationGateway)
             throws NotificationException {
-        logger.info("Notifying doctor about new appointment...");
-
         try {
-            notificationGateway.notify(doctor.getEmail(),
-                    DoctorNotification.create(
-                            doctor.getName(),
-                            patient.getName(),
-                            appointment.getDate().toString(),
-                            appointment.getTimeslot())
-            );
+            new Thread(() -> {
+                logger.info("Notifying doctor about new appointment...");
 
-            logger.info("Notifying doctor about new appointment...");
+                notificationGateway.notify(doctor.getEmail(),
+                        DoctorNotification.create(
+                                doctor.getName(),
+                                patient.getName(),
+                                appointment.getDate().toString(),
+                                appointment.getTimeslot())
+                );
+
+                logger.info("Notification sent.");
+            }).start();
 
         } catch (Exception ex) {
             throw new NotificationException(
@@ -146,6 +142,5 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
         return gateway.getAppointmentsByDoctor(doctorId);
     }
-
 
 }
