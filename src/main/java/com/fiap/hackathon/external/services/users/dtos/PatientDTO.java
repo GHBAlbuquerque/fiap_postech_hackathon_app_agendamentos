@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Patient {
+public class PatientDTO {
 
     private String id;
     private Boolean isActive;

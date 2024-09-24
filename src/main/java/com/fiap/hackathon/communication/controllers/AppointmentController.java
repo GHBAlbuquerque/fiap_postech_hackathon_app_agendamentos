@@ -8,6 +8,7 @@ import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
+import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
 import com.fiap.hackathon.core.entity.Appointment;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,10 +32,12 @@ public class AppointmentController {
 
     private final AppointmentGateway gateway;
     private final AppointmentUseCase useCase;
+    private final NotificationGateway notificationGateway;
 
-    public AppointmentController(AppointmentGateway gateway, AppointmentUseCase useCase) {
+    public AppointmentController(AppointmentGateway gateway, AppointmentUseCase useCase, NotificationGateway notificationGateway) {
         this.gateway = gateway;
         this.useCase = useCase;
+        this.notificationGateway = notificationGateway;
     }
 
     @ApiResponses(value = {
@@ -49,7 +52,7 @@ public class AppointmentController {
     ) throws AppointmentConflictException, CreateEntityException {
 
         final var appointment = AppointmentBuilder.fromRequestToDomain(request);
-        final var result = useCase.create(appointment, gateway);
+        final var result = useCase.create(appointment, gateway, notificationGateway);
         final var id = result.getId();
 
         final var uri = URI.create(id);

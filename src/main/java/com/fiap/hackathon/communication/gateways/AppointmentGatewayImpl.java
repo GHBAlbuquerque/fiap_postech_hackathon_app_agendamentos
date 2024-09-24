@@ -1,11 +1,15 @@
 package com.fiap.hackathon.communication.gateways;
 
+import com.fiap.hackathon.common.builders.DoctorBuilder;
+import com.fiap.hackathon.common.builders.PatientBuilder;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.Doctor;
+import com.fiap.hackathon.core.entity.Patient;
 import com.fiap.hackathon.external.services.users.UsersHTTPClient;
 
 import java.time.LocalDate;
@@ -93,18 +97,20 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
     }
 
     @Override
-    public Boolean doesPatientExist(String patientId) throws EntitySearchException {
+    public Patient getPatientById(String patientId) throws EntitySearchException {
         try {
-            return usersHTTPClient.getPatientById(patientId, MS_USER, CONTENT_TYPE).getBody().getIsActive();
+            final var response = usersHTTPClient.getPatientById(patientId, MS_USER, CONTENT_TYPE).getBody();
+            return PatientBuilder.fromDTOtoDomain(response);
         } catch (Exception ex) {
             throw new EntitySearchException(ExceptionCodes.APPOINTMENT_03_DOCTOR_NOT_FOUND, "Patient not found.");
         }
     }
 
     @Override
-    public Boolean doesDoctorExist(String doctorId) throws EntitySearchException {
+    public Doctor getDoctorById(String doctorId) throws EntitySearchException {
         try {
-            return usersHTTPClient.getDoctorById(doctorId, MS_USER, CONTENT_TYPE).getBody().getIsActive();
+            final var response = usersHTTPClient.getDoctorById(doctorId, MS_USER, CONTENT_TYPE).getBody();
+            return DoctorBuilder.fromDTOtoDomain(response);
         } catch (Exception ex) {
             throw new EntitySearchException(ExceptionCodes.APPOINTMENT_04_PATIENT_NOT_FOUND, "Doctor not found.");
         }

@@ -1,4 +1,4 @@
-package com.fiap.hackathon.external.services.users.dtos;
+package com.fiap.hackathon.core.entity;
 
 import lombok.Getter;
 import lombok.Setter;

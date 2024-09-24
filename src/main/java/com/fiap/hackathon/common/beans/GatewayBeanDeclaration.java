@@ -21,7 +21,7 @@ public class GatewayBeanDeclaration {
 
     @Bean
     public NotificationGateway notificationGateway(EmailSender emailSender) {
-        return new NotificationGatewayImpl() {
+        return new NotificationGatewayImpl(emailSender) {
         };
     }
 }

@@ -2,5 +2,5 @@ package com.fiap.hackathon.common.interfaces.gateways;
 
 public interface NotificationGateway {
 
-    void notifyUser();
+    void notify(String email, String message);
 }

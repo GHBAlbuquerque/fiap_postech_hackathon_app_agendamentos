@@ -4,6 +4,10 @@ import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.Doctor;
+import com.fiap.hackathon.core.entity.Patient;
+import com.fiap.hackathon.external.services.users.dtos.DoctorDTO;
+import com.fiap.hackathon.external.services.users.dtos.PatientDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,8 +28,8 @@ public interface AppointmentGateway {
 
     Boolean isScheduleAvailable(Appointment appointment) throws AppointmentConflictException, EntitySearchException;
 
-    Boolean doesPatientExist(String patientId) throws EntitySearchException;
+    Doctor getDoctorById(String patientId) throws EntitySearchException;
 
-    Boolean doesDoctorExist(String doctorId) throws EntitySearchException;
+    Patient getPatientById(String doctorId) throws EntitySearchException;
 
 }

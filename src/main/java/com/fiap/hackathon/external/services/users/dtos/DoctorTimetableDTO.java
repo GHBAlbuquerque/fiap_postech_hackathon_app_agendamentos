@@ -13,7 +13,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorTimetable {
+public class DoctorTimetableDTO {
 
     private String id;
     private String doctorId;

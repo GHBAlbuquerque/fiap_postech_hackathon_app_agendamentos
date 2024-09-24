@@ -1,12 +1,13 @@
 package com.fiap.hackathon.core.usecase;
 
-import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
-import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
-import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
-import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
+import com.fiap.hackathon.common.exceptions.custom.*;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
+import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
+import com.fiap.hackathon.common.notifications.DoctorNotification;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.Doctor;
+import com.fiap.hackathon.core.entity.Patient;
 import jakarta.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,10 +17,16 @@ import java.util.List;
 
 public class AppointmentUseCaseImpl implements AppointmentUseCase {
 
+    private Doctor doctor;
+    private Patient patient;
+
     private static final Logger logger = LogManager.getLogger(AppointmentUseCaseImpl.class);
 
     @Override
-    public Appointment create(Appointment appointment, AppointmentGateway gateway) throws CreateEntityException, AppointmentConflictException {
+    public Appointment create(Appointment appointment,
+                              AppointmentGateway gateway,
+                              NotificationGateway notificationGateway)
+            throws CreateEntityException, AppointmentConflictException {
         final var doctorId = appointment.getDoctorId();
         final var patientId = appointment.getPatientId();
 
@@ -38,6 +45,14 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             final var savedAppointment = gateway.create(appointment);
 
             logger.info("APPOINTMENT successfully created.");
+
+            new Thread(() -> {
+                try {
+                    notifyAppointmentCreation(savedAppointment, notificationGateway);
+                } catch (NotificationException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
 
             return savedAppointment;
 
@@ -59,16 +74,16 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         }
     }
 
-    private static void areUsersValid(String doctorId, String patientId, AppointmentGateway gateway) throws EntitySearchException {
+    private void areUsersValid(String doctorId, String patientId, AppointmentGateway gateway) throws EntitySearchException {
         logger.info("Checking patient and doctor existence on database.");
 
-        gateway.doesDoctorExist(doctorId);
-        gateway.doesPatientExist(patientId);
+        this.patient = gateway.getPatientById(doctorId);
+        this.doctor = gateway.getDoctorById(patientId);
 
         logger.info("Validated.");
     }
 
-    private static void isSchedulable(Appointment appointment, String doctorId, AppointmentGateway gateway)
+    private void isSchedulable(Appointment appointment, String doctorId, AppointmentGateway gateway)
             throws AppointmentConflictException, EntitySearchException {
         logger.info("Validating availability for requested appointment.");
 
@@ -89,6 +104,30 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
         }
 
         logger.info("Validated.");
+    }
+
+    private void notifyAppointmentCreation(Appointment appointment, NotificationGateway notificationGateway)
+            throws NotificationException {
+        logger.info("Notifying doctor about new appointment...");
+
+        try {
+            notificationGateway.notify(doctor.getEmail(),
+                    DoctorNotification.create(
+                            doctor.getName(),
+                            patient.getName(),
+                            appointment.getDate().toString(),
+                            appointment.getTimeslot())
+            );
+
+            logger.info("Notifying doctor about new appointment...");
+
+        } catch (Exception ex) {
+            throw new NotificationException(
+                    ExceptionCodes.APPOINTMENT_08_NOTIFICATION_FAILED,
+                    ex.getMessage()
+            );
+        }
+
     }
 
     @Override
