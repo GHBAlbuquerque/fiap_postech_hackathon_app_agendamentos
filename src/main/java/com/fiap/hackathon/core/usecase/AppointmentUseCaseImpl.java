@@ -72,8 +72,15 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             throws AppointmentConflictException, EntitySearchException {
         logger.info("Validating availability for requested appointment.");
 
-        if (Boolean.FALSE.equals(gateway.isDoctorAvailable(doctorId, appointment)) ||
-                Boolean.FALSE.equals(gateway.isScheduleAvailable(appointment))) {
+        if (Boolean.FALSE.equals(gateway.isDoctorAvailable(doctorId, appointment))) {
+
+            throw new AppointmentConflictException(
+                    ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,
+                    "Selected doctor does not work on selected date/time. Please either select another doctor or change appointment date/time."
+            );
+        }
+
+        if (Boolean.FALSE.equals(gateway.isScheduleAvailable(appointment))) {
 
             throw new AppointmentConflictException(
                     ExceptionCodes.APPOINTMENT_05_APPOINTMENT_CONFLICT,

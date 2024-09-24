@@ -174,10 +174,10 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             itemValues.put("id", AttributeValue.builder().s(appointment.getId()).build());
 
         itemValues.put("doctorId", AttributeValue.builder().s(appointment.getDoctorId()).build());
-        itemValues.put("patientId", AttributeValue.builder().s(appointment.getDoctorId()).build());
-        itemValues.put("scheduledDate", AttributeValue.builder().s(appointment.getDoctorId()).build());
-        itemValues.put("timeslot", AttributeValue.builder().s(appointment.getDoctorId()).build());
-        itemValues.put("createdAt", AttributeValue.builder().s(appointment.getDoctorId()).build());
+        itemValues.put("patientId", AttributeValue.builder().s(appointment.getPatientId()).build());
+        itemValues.put("scheduledDate", AttributeValue.builder().s(appointment.getDate().toString()).build());
+        itemValues.put("timeslot", AttributeValue.builder().s(appointment.getTimeslot()).build());
+        itemValues.put("createdAt", AttributeValue.builder().s(appointment.getCreatedAt().toString()).build());
 
         return itemValues;
     }
