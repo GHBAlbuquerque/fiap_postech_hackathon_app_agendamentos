@@ -16,6 +16,8 @@ public class EmailSenderImpl implements EmailSender {
         this.mailSender = mailSender;
     }
 
+    //FIXME: Caused by: jakarta.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted. For more information, go to 535 5.7.8  https://support.google.com/mail/?p=BadCredentials
+
     @Override
     public void send(Message message) throws MessagingException {
         var mimeMessage = criarMimeMessage(message);
