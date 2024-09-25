@@ -79,11 +79,11 @@ jacocoTestReport {
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: [
-					'com/fiap/fastfood/common/exceptions/*/**',
-					'com/fiap/fastfood/external/services/*/**',
-					'com/fiap/fastfood/core/entity/**',
-					'com/fiap/fastfood/common/dto/*/**',
-					'com/fiap/fastfood/common/validation/**'
+					'com/fiap/hackathon/common/exceptions/*/**',
+					'com/fiap/hackathon/external/services/*/**',
+					'com/fiap/hackathon/core/entity/**',
+					'com/fiap/hackathon/common/dto/*/**',
+					'com/fiap/hackathon/common/validation/**'
 			])
 		}))
 	}
