@@ -69,7 +69,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
         final var message = new ExceptionDetails(
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
-                "Couldn't schedule appointment. Please try again with a diffent day and/or timeslot.",
+                "Couldn't schedule appointment. Please try again with a different day and/or timeslot.",
                 ex.getCode().name(),
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),

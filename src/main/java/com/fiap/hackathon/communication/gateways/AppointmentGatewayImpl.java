@@ -10,7 +10,10 @@ import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
 import com.fiap.hackathon.core.entity.Doctor;
 import com.fiap.hackathon.core.entity.Patient;
+import com.fiap.hackathon.core.usecase.AppointmentUseCaseImpl;
 import com.fiap.hackathon.external.services.users.UsersHTTPClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +30,9 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
         this.repository = repository;
         this.usersHTTPClient = usersHTTPClient;
     }
+
+    private static final Logger logger = LogManager.getLogger(AppointmentUseCaseImpl.class);
+
 
     @Override
     public Appointment create(Appointment appointment) throws CreateEntityException {
@@ -102,6 +108,7 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
             final var response = usersHTTPClient.getPatientById(patientId, MS_USER, CONTENT_TYPE).getBody();
             return PatientBuilder.fromDTOtoDomain(response);
         } catch (Exception ex) {
+            logger.error(ex);
             throw new EntitySearchException(ExceptionCodes.APPOINTMENT_03_DOCTOR_NOT_FOUND, "Patient not found.");
         }
     }
@@ -112,6 +119,7 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
             final var response = usersHTTPClient.getDoctorById(doctorId, MS_USER, CONTENT_TYPE).getBody();
             return DoctorBuilder.fromDTOtoDomain(response);
         } catch (Exception ex) {
+            logger.error(ex);
             throw new EntitySearchException(ExceptionCodes.APPOINTMENT_04_PATIENT_NOT_FOUND, "Doctor not found.");
         }
     }

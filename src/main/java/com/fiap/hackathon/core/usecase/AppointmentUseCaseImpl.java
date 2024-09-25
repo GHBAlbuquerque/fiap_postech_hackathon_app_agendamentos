@@ -9,6 +9,7 @@ import com.fiap.hackathon.core.entity.Appointment;
 import com.fiap.hackathon.core.entity.Doctor;
 import com.fiap.hackathon.core.entity.Patient;
 import jakarta.annotation.Nullable;
+import jakarta.mail.MessagingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,8 +72,8 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
     private void areUsersValid(String doctorId, String patientId, AppointmentGateway gateway) throws EntitySearchException {
         logger.info("Checking patient and doctor existence on database.");
 
-        this.patient = gateway.getPatientById(doctorId);
-        this.doctor = gateway.getDoctorById(patientId);
+        this.patient = gateway.getPatientById(patientId);
+        this.doctor = gateway.getDoctorById(doctorId);
 
         logger.info("Validated.");
     }
@@ -106,13 +107,18 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             new Thread(() -> {
                 logger.info("Notifying doctor about new appointment...");
 
-                notificationGateway.notify(doctor.getEmail(),
-                        DoctorNotification.create(
-                                doctor.getName(),
-                                patient.getName(),
-                                appointment.getDate().toString(),
-                                appointment.getTimeslot())
-                );
+                try {
+                    notificationGateway.notify(doctor.getEmail(),
+                            DoctorNotification.SUBJECT,
+                            DoctorNotification.create(
+                                    doctor.getName(),
+                                    patient.getName(),
+                                    appointment.getDate().toString(),
+                                    appointment.getTimeslot())
+                    );
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
 
                 logger.info("Notification sent.");
             }).start();
