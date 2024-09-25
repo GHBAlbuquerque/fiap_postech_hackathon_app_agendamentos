@@ -2,7 +2,7 @@ name: pipeline
 
 on:
   push:
-    branches: [ main ]
+#    branches: [ main ]
 
 env:
   ECR_REPOSITORY: fiap_postech_hackathon_app_agendamentos
@@ -31,10 +31,10 @@ jobs:
           chmod +x ./gradlew
           ./gradlew test --scan
 
-      - name: Generate JaCoCo Badge
-        uses: cicirello/jacoco-badge-generator@v2
-        with:
-          jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
+      #- name: Generate JaCoCo Badge
+      #  uses: cicirello/jacoco-badge-generator@v2
+      #  with:
+      #    jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
 
   build:
     name: build
