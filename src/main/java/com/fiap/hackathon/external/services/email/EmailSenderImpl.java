@@ -22,7 +22,6 @@ public class EmailSenderImpl implements EmailSender {
     public void send(Message message) throws MessagingException {
         var mimeMessage = criarMimeMessage(message);
         mailSender.send(mimeMessage);
-        System.out.printf("message sent");
     }
 
     protected MimeMessage criarMimeMessage(Message message) throws MessagingException {

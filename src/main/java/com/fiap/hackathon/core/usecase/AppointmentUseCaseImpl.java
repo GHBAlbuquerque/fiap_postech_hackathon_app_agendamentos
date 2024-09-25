@@ -117,6 +117,7 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
                                     appointment.getTimeslot())
                     );
                 } catch (MessagingException e) {
+                    logger.error("Error trying to send e-mail: {}", e.getMessage());
                     throw new RuntimeException(e);
                 }
 
