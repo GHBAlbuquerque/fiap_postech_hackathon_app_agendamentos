@@ -28,7 +28,7 @@ spec:
             - name: ACCOUNT_ID
               value: "419623569149"
             - name: MS_USUARIO_URL
-              value: ""
+              value: "http://alb-cluster-fiap-524154911.us-east-1.elb.amazonaws.com"
           ports:
             - containerPort: 80
               protocol: TCP
