@@ -83,7 +83,7 @@ Compõem esta entrega:
 
     * https://github.com/GHBAlbuquerque/fiap_postech_hackathon_app_usuarios
 
-* Repositório da App de Produto
+* Repositório da App de Agendamentos
 
     * https://github.com/GHBAlbuquerque/fiap_postech_hackathon_app_agendamentos
 
