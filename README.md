@@ -24,7 +24,7 @@ Requisitos Funcionais implementados:
 - Cadastro/Edição de horários disponíveis (Médico)
 - Busca por Médicos
 - Agendamento de Consultas
-- Notifição de Consulta marcada (Médico)
+- Notificação de Consulta marcada (Médico)
 
 Também houve especial atencao aos requisitos não-funcionais:
 - Escalabilidade da solução;
