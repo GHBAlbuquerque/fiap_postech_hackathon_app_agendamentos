@@ -26,7 +26,7 @@ Requisitos Funcionais implementados:
 - Agendamento de Consultas
 - Notificação de Consulta marcada (Médico)
 
-Também houve especial atencao aos requisitos não-funcionais:
+Requisitos não-funcionais implementados:
 - Escalabilidade da solução;
 - Validação da consulta solicitada;
 - Validação de conflitos de horários;
@@ -132,7 +132,7 @@ Passo-a-passo:
 1. Obtenha credenciais de aws_access_key_id, aws_secret_access_key e aws_session_token da sua conta na AWS Academy ou na
    AWS.
 2. Altere credenciais nos secrets para actions dos repositórios
-3. Altere credenciais no arquivo .credentials na pasta .aws no seu computador caso deseje rodar a aplicação localmente
+3. Altere credenciais no arquivo credentials na pasta .aws no seu computador caso deseje rodar a aplicação localmente
    ou usar o aws cli
 
 <br/>
