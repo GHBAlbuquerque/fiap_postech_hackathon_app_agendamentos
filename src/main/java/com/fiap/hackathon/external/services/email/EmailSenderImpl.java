@@ -24,7 +24,7 @@ public class EmailSenderImpl implements EmailSender {
         try {
             logger.info("Sending e-mail...");
 
-            final var from = new Email(message.getTo());
+            final var from = new Email(message.getFrom());
             final var subject = message.getSubject();
             final var to = new Email(message.getTo());
             final var content = new Content("text/plain", message.getText());
@@ -37,7 +37,7 @@ public class EmailSenderImpl implements EmailSender {
             request.setBody(mail.build());
             final var response = sendGrid.api(request);
 
-            logger.info("E-mail sent...{}", response.getBody());
+            logger.info("E-mail sent! {}", response.getBody());
 
         } catch (IOException e) {
             logger.error("Failed to send e-mail...");

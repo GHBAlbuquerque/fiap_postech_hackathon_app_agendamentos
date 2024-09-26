@@ -156,7 +156,7 @@ Passo-a-passo:
 > Subindo a App de Agendamentos
 
 1. Abra o projeto no **Repositório da App de Agendamentos**
-2. Para o envio de e-mails, optou-se pelo uso da solução SendGrid. É necessário possuir uma conta na plataforma e uma API KEY gerada.
+2. Para o envio de e-mails, optou-se pelo uso da solução SendGrid. É necessário possuir uma conta na plataforma, com Sender verificado, e uma API KEY gerada.
 3. Além das informações de login na AWS para execução da pipeline, preencha também:
    1. SMTP_SENDGRID_MAIL -> E-mail do SendGrid para disparo de notificações pela app
    2. SMTP_SENDGRID_APIKEY -> API key do SendGrid para disparo de notificações
