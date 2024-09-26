@@ -99,6 +99,8 @@ class AppointmentUseCaseImplTest {
     }
 
 
+
+
     private Appointment createAppointment() {
         final var currentDateTime = LocalDateTime.now();
         return new Appointment()

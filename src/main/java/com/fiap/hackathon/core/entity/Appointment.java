@@ -52,7 +52,7 @@ public class Appointment {
         final var localTime = LocalTime.parse(startingTime);
         final var appointmentTime = LocalDateTime.of(date, localTime);
 
-        if(appointmentTime.isBefore(LocalDateTime.now())) {
+        if (appointmentTime.isBefore(LocalDateTime.now())) {
             final var message = "Invalid hour selected. Please select an hour in the future.";
 
             throw new AppointmentCreationException(
@@ -62,8 +62,26 @@ public class Appointment {
         }
     }
 
-    public void validateStatusChange(AppointmentStatusEnum currentStatus, AppointmentStatusEnum newStatus) {
+    public void validateStatusChange(AppointmentStatusEnum currentStatus, AppointmentStatusEnum newStatus) throws AppointmentCreationException {
+        if (currentStatus.equals(newStatus)) {
+            throw new AppointmentCreationException(
+                    ExceptionCodes.APPOINTMENT_09_APPOINTMENT_UPDATE,
+                    "Appointment Status is already " + newStatus.name()
+            );
+        }
 
-    };
+        if (currentStatus.equals(AppointmentStatusEnum.CANCELED)) {
+            throw new AppointmentCreationException(
+                    ExceptionCodes.APPOINTMENT_09_APPOINTMENT_UPDATE,
+                    "Canceled appointments cannot be updated."
+            );
+        }
 
+        if (currentStatus.equals(AppointmentStatusEnum.COMPLETED)) {
+            throw new AppointmentCreationException(
+                    ExceptionCodes.APPOINTMENT_09_APPOINTMENT_UPDATE,
+                    "Completed appointments cannot be updated."
+            );
+        }
+    }
 }
