@@ -170,7 +170,7 @@ class AppointmentGatewayImplTest {
 
         final var isAvailable = appointmentGateway.isDoctorAvailable(doctorId, appointment);
 
-        assertTrue(isAvailable);
+        assertFalse(isAvailable);
     }
 
     @Test
