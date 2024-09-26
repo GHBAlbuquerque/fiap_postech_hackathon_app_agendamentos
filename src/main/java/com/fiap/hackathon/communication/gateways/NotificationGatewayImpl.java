@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class NotificationGatewayImpl implements NotificationGateway {
 
-    @Value("${spring.mail.username}")
+    @Value("${hackathon.fiap.mail.sender}")
     private String sender;
 
     private final EmailSender emailSender;

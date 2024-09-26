@@ -382,11 +382,6 @@
             }
           }
         },
-        "security": [
-          {
-            "lambda_authorizer": []
-          }
-        ],
         "x-amazon-apigateway-integration": {
           "httpMethod": "POST",
           "requestParameters": {
