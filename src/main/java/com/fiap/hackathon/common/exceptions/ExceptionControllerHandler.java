@@ -109,6 +109,21 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {AuthenticationException.class})
+    public ResponseEntity<ExceptionDetails> resourceException(AuthenticationException ex, WebRequest request) {
+
+        final var message = new ExceptionDetails(
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+                "Invalid Requester.",
+                ex.getCode().name(),
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getErrors());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUncaughtException(Exception ex, WebRequest request) {

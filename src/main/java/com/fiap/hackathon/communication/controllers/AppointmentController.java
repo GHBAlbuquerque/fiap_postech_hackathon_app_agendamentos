@@ -3,12 +3,10 @@ package com.fiap.hackathon.communication.controllers;
 import com.fiap.hackathon.common.builders.AppointmentBuilder;
 import com.fiap.hackathon.common.dto.request.CreateAppointmentRequest;
 import com.fiap.hackathon.common.dto.response.GetAppointmentResponse;
-import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
-import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
-import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
-import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
+import com.fiap.hackathon.common.exceptions.custom.*;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
+import com.fiap.hackathon.common.interfaces.gateways.AuthenticationGateway;
 import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
 import com.fiap.hackathon.core.entity.Appointment;
@@ -35,11 +33,13 @@ public class AppointmentController {
     private final AppointmentGateway gateway;
     private final AppointmentUseCase useCase;
     private final NotificationGateway notificationGateway;
+    private final AuthenticationGateway authenticationGateway;
 
-    public AppointmentController(AppointmentGateway gateway, AppointmentUseCase useCase, NotificationGateway notificationGateway) {
+    public AppointmentController(AppointmentGateway gateway, AppointmentUseCase useCase, NotificationGateway notificationGateway, AuthenticationGateway authenticationGateway) {
         this.gateway = gateway;
         this.useCase = useCase;
         this.notificationGateway = notificationGateway;
+        this.authenticationGateway = authenticationGateway;
     }
 
     @ApiResponses(value = {
@@ -52,8 +52,8 @@ public class AppointmentController {
     public ResponseEntity<GetAppointmentResponse> createAppointment(
             @RequestBody @Valid CreateAppointmentRequest request,
             @RequestHeader String user_email
-    ) throws AppointmentConflictException, CreateEntityException {
-        System.out.println(user_email); //TODO
+    ) throws AppointmentConflictException, CreateEntityException, AuthenticationException {
+        authenticationGateway.validatePatientCaller(user_email, request.getPatientId());
 
         final var appointment = AppointmentBuilder.fromRequestToDomain(request);
         final var result = useCase.create(appointment, gateway, notificationGateway);
@@ -115,12 +115,8 @@ public class AppointmentController {
                                           @RequestParam AppointmentStatusEnum status,
                                           @RequestHeader String user_email)
             throws AppointmentUpdateException {
-        System.out.println(user_email); //TODO
-
         useCase.updateStatus(id, status, gateway);
-
         return ResponseEntity.noContent().build();
-
     }
 
 }
