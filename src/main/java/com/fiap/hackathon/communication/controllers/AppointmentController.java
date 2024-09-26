@@ -50,8 +50,10 @@ public class AppointmentController {
     })
     @PostMapping(value = "", produces = "application/json", consumes = "application/json")
     public ResponseEntity<GetAppointmentResponse> createAppointment(
-            @RequestBody @Valid CreateAppointmentRequest request
+            @RequestBody @Valid CreateAppointmentRequest request,
+            @RequestHeader String user_email
     ) throws AppointmentConflictException, CreateEntityException {
+        System.out.println(user_email); //TODO
 
         final var appointment = AppointmentBuilder.fromRequestToDomain(request);
         final var result = useCase.create(appointment, gateway, notificationGateway);
@@ -110,8 +112,10 @@ public class AppointmentController {
     })
     @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> updateStatus(@PathVariable String id,
-                                          @RequestParam(required = true) AppointmentStatusEnum status)
+                                          @RequestParam AppointmentStatusEnum status,
+                                          @RequestHeader String user_email)
             throws AppointmentUpdateException {
+        System.out.println(user_email); //TODO
 
         useCase.updateStatus(id, status, gateway);
 
