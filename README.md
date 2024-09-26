@@ -139,13 +139,12 @@ Passo-a-passo:
 
 <br/>
 
-> Subindo a App de Cliente
+> Subindo a App de Usuários
 
-1. Abra o projeto no **Repositório da App de Cliente**
+1. Abra o projeto no **Repositório da App de Usuários**
 2. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
     1. Ajuste URI do repositório remoto ECR AWS (accountId e region)
 3. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.env:
-    1. Corrija DB_HOST mudando o endpoint do RDS
     2. Corrija COGNITO_ID mudando o valor do ClientId do Cognito
     3. Corrija ACCOUNT_ID mudando o id da conta AWS
 4. Suba a aplicação via CI/CD do repositório
@@ -154,13 +153,18 @@ Passo-a-passo:
 
 <br/>
 
-> Subindo a App de Produto
+> Subindo a App de Agendamentos
 
-1. Abra o projeto no **Repositório da App de Produto**
-2. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
+1. Abra o projeto no **Repositório da App de Agendamentos**
+2. Al[em das informações de login na AWS para execução da pipeline, preencha também:
+   1. SMTP_MAIL -> E-mail para disparo de notificações pela app
+   2. SMTP_MAIL_PASSWORD -> senha do e-mail para disparo de notificações
+3. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
     1. Ajuste URI do repositório remoto ECR AWS (accountId e region)
-3. Suba a aplicação via CI/CD do repositório
-4. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
+    2. Corrija ACCOUNT_ID mudando o id da conta AWS
+    3. Ajuste o endereço de chamada (DNS do loadblancer) para o MS Usuário (MS_USUARIO_URL)
+4. Suba a aplicação via CI/CD do repositório
+5. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
    terminal para acessar seu cluster. Digite ``k9s`` para visualizar e gerenciar pods em execução.
 
 > Subindo a Lambda de Autenticação
