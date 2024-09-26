@@ -14,6 +14,24 @@ Integrantes:
 
 <br/>
 
+### 🩻 MVP: Funcionalidades
+
+Neste projeto, buscou-se atender aos requisiros funcionais e não funcionais no descritivo da atividade.
+
+Requisitos Funcionais implementados:
+- Cadastro de Usuário (Médico e Paciente)
+- Autenticaçao de Usuário (Médico e Paciente)
+- Cadastro/Edição de horários disponíveis (Médico)
+- Busca por Médicos
+- Agendamento de Consultas
+- Notifição de Consulta marcada (Médico)
+
+Também houve especial atencao aos requisitos não-funcionais:
+- Escalabilidade da solução;
+- Validação da consulta solicitada;
+- Validação de conflitos de horários;
+- Concorrência de agendamentos;
+
 ### ✍️ MVP: Premissas
 
 Tratando-se de um MVP, e com tempo de execução limitado (2 semanas), algumas premissas foram criadas para delimitar com precisão o escopo e tornar possível a entrega dos requisitos funcionais e não funcionais sem abrir mão da qualidade do que foi criado.
@@ -35,6 +53,7 @@ São elas:
 Desenho do fluxo da criação de um agendamento e as validações executadas:
 ![](misc/images/sol_hackathon-fluxograma.jpg)
 
+É necessario ser um paciente corretamenre cadastrado e autenticado para agendar consultas.
 <br/>
 
 
@@ -205,7 +224,7 @@ Passo-a-passo:
 2. Vá para o site 'https://editor.swagger.io/' e cole o json copiado na esquerda
 3. Veja os endpoints disponíveis para a API
 4. Para realizar chamadas aos endpoints http do gateway, utilize a 'Invoke URL' e os seguintes headers:
-    1. user_email -> valor cadastrado previamente: 93678719023
+    1. user_email -> valor cadastrado previamente: aneleh.annavoig@gmail.com
     2. user_pword -> valor cadastrado previamente: FIAPauth123_
 
 <br/>
