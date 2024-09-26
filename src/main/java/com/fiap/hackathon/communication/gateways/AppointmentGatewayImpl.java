@@ -2,12 +2,14 @@ package com.fiap.hackathon.communication.gateways;
 
 import com.fiap.hackathon.common.builders.DoctorBuilder;
 import com.fiap.hackathon.common.builders.PatientBuilder;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import com.fiap.hackathon.core.entity.Doctor;
 import com.fiap.hackathon.core.entity.Patient;
 import com.fiap.hackathon.core.usecase.AppointmentUseCaseImpl;
@@ -96,10 +98,7 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
 
         final var doctorTimetable = repository.getAppointmentsByDoctorAndDate(doctorId, date);
 
-        return doctorTimetable.stream()
-                .filter(ap -> timeslot.equals(ap.getTimeslot()))
-                .findAny()
-                .isEmpty();
+        return doctorTimetable.stream().filter(ap -> timeslot.equals(ap.getTimeslot())).findAny().isEmpty();
     }
 
     @Override
@@ -122,6 +121,11 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
             logger.error(ex);
             throw new EntitySearchException(ExceptionCodes.APPOINTMENT_04_PATIENT_NOT_FOUND, "Doctor not found.");
         }
+    }
+
+    @Override
+    public void updateStatus(String id, AppointmentStatusEnum status) throws AppointmentUpdateException {
+        repository.updateStatus(id, status);
     }
 
 }

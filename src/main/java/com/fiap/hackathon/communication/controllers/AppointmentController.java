@@ -4,6 +4,7 @@ import com.fiap.hackathon.common.builders.AppointmentBuilder;
 import com.fiap.hackathon.common.dto.request.CreateAppointmentRequest;
 import com.fiap.hackathon.common.dto.response.GetAppointmentResponse;
 import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.model.ExceptionDetails;
@@ -11,6 +12,7 @@ import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -98,6 +100,23 @@ public class AppointmentController {
                         )
                         .toList()
         );
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class))),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionDetails.class)))
+    })
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<?> updateStatus(@PathVariable String id,
+                                          @RequestParam(required = true) AppointmentStatusEnum status)
+            throws AppointmentUpdateException {
+
+        useCase.updateStatus(id, status, gateway);
+
+        return ResponseEntity.noContent().build();
+
     }
 
 }

@@ -6,4 +6,7 @@ public class LoggingPattern {
 
     public static final String GET_ENTITY_SUCCESS = "Entity with attribute '{}' found on table '{}'";
     public static final String GET_ENTITY_ERROR = "Error looking for entity with attribute {} on database: {}";
+
+    public static final String UPDATE_ENTITY_SUCCESS = "Entity with id '{}'updated on table '{}'";
+    public static final String UPDATE_ENTITY_ERROR = "Error updating entity with id {} on database: {}";
 }

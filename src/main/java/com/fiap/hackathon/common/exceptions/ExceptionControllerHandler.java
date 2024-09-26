@@ -84,7 +84,22 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
         final var message = new ExceptionDetails(
                 "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
-                "Couldn't create timetable. Try again with different values.",
+                "Couldn't create appointment. Try again with different values.",
+                ex.getCode().name(),
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date(),
+                ex.getErrors());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {AppointmentUpdateException.class})
+    public ResponseEntity<ExceptionDetails> resourceException(AppointmentUpdateException ex, WebRequest request) {
+
+        final var message = new ExceptionDetails(
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+                "Couldn't cancel appointment.",
                 ex.getCode().name(),
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.value(),

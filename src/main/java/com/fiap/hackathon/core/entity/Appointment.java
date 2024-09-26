@@ -20,6 +20,7 @@ public class Appointment {
     private String patientId;
     private LocalDate date;
     private String timeslot;
+    private AppointmentStatusEnum status;
     private LocalDateTime createdAt;
 
     public void isValid() throws AppointmentCreationException {
@@ -60,5 +61,9 @@ public class Appointment {
             );
         }
     }
+
+    public void validateStatusChange(AppointmentStatusEnum currentStatus, AppointmentStatusEnum newStatus) {
+
+    };
 
 }
