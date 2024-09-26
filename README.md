@@ -24,6 +24,7 @@ Requisitos Funcionais implementados:
 - Cadastro/Edição de horários disponíveis (Médico)
 - Busca por Médicos
 - Agendamento de Consultas
+- Cancelamento de Consultas
 - Notificação de Consulta marcada (Médico)
 
 Requisitos não-funcionais implementados:
@@ -238,6 +239,17 @@ Passo-a-passo:
 5. Utilize o e-mail e senha cadastrados para fazer solicitações como orientado acima
 
 <br/>
+
+
+### 💡 MVP: Evolução
+
+Feature não contempladas neste MVP, que poderiam ser feitas como melhorias na evolução:
+
+1) Agendamento de consultas com tempo diferente de 1h (ex: 0h30, 1h30)
+2) Notificação de Paciente
+3) Notificação para alterações de status das consultas
+4) Alterações de dados de Usuário (Pacientes e Médicos)
+5) Exclusão de conta de Usuário (Pacientes e Médicos)
 
 ## Autores
 
