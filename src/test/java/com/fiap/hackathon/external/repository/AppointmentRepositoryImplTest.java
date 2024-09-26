@@ -1,5 +1,6 @@
 package com.fiap.hackathon.external.repository;
 
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
@@ -183,6 +184,45 @@ class AppointmentRepositoryImplTest {
         });
 
         assertEquals(ExceptionCodes.APPOINTMENT_01_NOT_FOUND, exception.getCode());
+    }
+
+    @Test
+    void shouldUpdateStatusSuccessfully() throws Exception {
+        final var id = "123";
+        final var status = AppointmentStatusEnum.SCHEDULED;
+
+        appointmentRepository.updateStatus(id, status);
+
+        verify(dynamoDbClient).updateItem(any(UpdateItemRequest.class));
+    }
+
+    @Test
+    void shouldThrowAppointmentUpdateExceptionWhenUpdateFails() {
+        final var id = "123";
+        final var status = AppointmentStatusEnum.SCHEDULED;
+        final var request = createUpdateItemRequest(id, status);
+
+        doThrow(RuntimeException.class).when(dynamoDbClient).updateItem(request);
+
+        assertThrows(AppointmentUpdateException.class, () -> appointmentRepository.updateStatus(id, status));
+    }
+
+    private UpdateItemRequest createUpdateItemRequest(String id, AppointmentStatusEnum status) {
+        final var key = new HashMap<String, AttributeValue>();
+        key.put("id", AttributeValue.builder().s(id).build());
+
+        final var updatedValues = new HashMap<String, AttributeValueUpdate>();
+        updatedValues.put("appointmentStatus",
+                AttributeValueUpdate.builder()
+                        .value(AttributeValue.builder().s(status.name()).build())
+                        .action(AttributeAction.PUT)
+                        .build());
+
+        return UpdateItemRequest.builder()
+                .tableName("AppointmentsTable") // Supondo que seja essa a tabela
+                .key(key)
+                .attributeUpdates(updatedValues)
+                .build();
     }
 
 
