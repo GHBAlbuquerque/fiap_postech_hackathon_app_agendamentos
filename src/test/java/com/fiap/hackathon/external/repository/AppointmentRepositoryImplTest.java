@@ -1,13 +1,10 @@
 package com.fiap.hackathon.external.repository;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.core.entity.Appointment;
-import com.fiap.hackathon.external.repository.AppointmentRepositoryImpl;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +18,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AppointmentRepositoryImplTest {
@@ -61,13 +62,7 @@ class AppointmentRepositoryImplTest {
     @Test
     void getAppointmentById_ShouldReturnAppointment_WhenExists() throws EntitySearchException {
         final var appointmentId = "appointment-id";
-        final var item = new HashMap<String, AttributeValue>();
-        item.put("id", AttributeValue.builder().s(appointmentId).build());
-        item.put("doctorId", AttributeValue.builder().s("doctor-id").build());
-        item.put("patientId", AttributeValue.builder().s("patient-id").build());
-        item.put("scheduledDate", AttributeValue.builder().s(LocalDate.now().toString()).build());
-        item.put("timeslot", AttributeValue.builder().s("10:00").build());
-        item.put("createdAt", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+        final var item = getItem(appointmentId);
 
         final var getItemRequest = GetItemRequest.builder()
                 .tableName("Appointment")
@@ -102,13 +97,7 @@ class AppointmentRepositoryImplTest {
     @Test
     void getAppointmentsByPatient_ShouldReturnAppointments_WhenExists() throws EntitySearchException {
         final var patientId = "patient-id";
-        final var item = new HashMap<String, AttributeValue>();
-        item.put("id", AttributeValue.builder().s("appointment-id").build());
-        item.put("doctorId", AttributeValue.builder().s("doctor-id").build());
-        item.put("patientId", AttributeValue.builder().s(patientId).build());
-        item.put("scheduledDate", AttributeValue.builder().s(LocalDate.now().toString()).build());
-        item.put("timeslot", AttributeValue.builder().s("10:00").build());
-        item.put("createdAt", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+        final var item = getItem("appointmentId");
 
         when(dynamoDbClient.query(any(QueryRequest.class))).thenReturn(QueryResponse.builder().items(List.of(item)).build());
 
@@ -140,13 +129,7 @@ class AppointmentRepositoryImplTest {
     @Test
     void getAppointmentsByDoctor_ShouldReturnAppointments_WhenExists() throws EntitySearchException {
         final var doctorId = "doctor-id";
-        final var item = new HashMap<String, AttributeValue>();
-        item.put("id", AttributeValue.builder().s("appointment-id").build());
-        item.put("doctorId", AttributeValue.builder().s(doctorId).build());
-        item.put("patientId", AttributeValue.builder().s("patient-id").build());
-        item.put("scheduledDate", AttributeValue.builder().s(LocalDate.now().toString()).build());
-        item.put("timeslot", AttributeValue.builder().s("10:00").build());
-        item.put("createdAt", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+        final var item = getItem("appointmentId");
 
         when(dynamoDbClient.query(any(QueryRequest.class))).thenReturn(QueryResponse.builder().items(List.of(item)).build());
 
@@ -179,13 +162,7 @@ class AppointmentRepositoryImplTest {
     void getAppointmentsByDoctorAndDate_ShouldReturnAppointments_WhenExists() throws EntitySearchException {
         final var doctorId = "doctor-id";
         final var date = LocalDate.now();
-        final var item = new HashMap<String, AttributeValue>();
-        item.put("id", AttributeValue.builder().s("appointment-id").build());
-        item.put("doctorId", AttributeValue.builder().s(doctorId).build());
-        item.put("patientId", AttributeValue.builder().s("patient-id").build());
-        item.put("scheduledDate", AttributeValue.builder().s(date.toString()).build());
-        item.put("timeslot", AttributeValue.builder().s("10:00").build());
-        item.put("createdAt", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+        final var item = getItem("appointmentId");
 
         when(dynamoDbClient.query(any(QueryRequest.class))).thenReturn(QueryResponse.builder().items(List.of(item)).build());
 
@@ -215,6 +192,20 @@ class AppointmentRepositoryImplTest {
                 .setPatientId("patient-id")
                 .setDate(LocalDate.now())
                 .setTimeslot("10:00")
+                .setStatus(AppointmentStatusEnum.SCHEDULED)
                 .setCreatedAt(LocalDateTime.now());
+    }
+
+    private static HashMap<String, AttributeValue> getItem(String appointmentId) {
+        final var item = new HashMap<String, AttributeValue>();
+        item.put("id", AttributeValue.builder().s(appointmentId).build());
+        item.put("doctorId", AttributeValue.builder().s("doctor-id").build());
+        item.put("patientId", AttributeValue.builder().s("patient-id").build());
+        item.put("scheduledDate", AttributeValue.builder().s(LocalDate.now().toString()).build());
+        item.put("timeslot", AttributeValue.builder().s("10:00").build());
+        item.put("appointmentStatus", AttributeValue.builder().s("SCHEDULED").build());
+        item.put("createdAt", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+
+        return item;
     }
 }
