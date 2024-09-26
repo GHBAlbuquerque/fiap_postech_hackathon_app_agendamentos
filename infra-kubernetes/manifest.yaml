@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fiap-postech-hackathon-app-agendamentos
+  namespace: fiap-pos-tech-hackathon
+spec:
+  selector:
+    matchLabels:
+      app: fiap-postech-hackathon-app-agendamentos
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fiap-postech-hackathon-app-agendamentos
+    spec:
+      containers:
+        - name: fiap-postech-hackathon-app-agendamentos
+          image: 419623569149.dkr.ecr.us-east-1.amazonaws.com/fiap_postech_hackathon_app_agendamentos:${IMAGE_TAG} #pegar uri do repositório ECR
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "200m"  # Requisição de CPU inicial
+              memory: "512Mi"
+            limits:
+              cpu: "500m"  # Limite de CPU
+              memory: "1Gi"
+          env:
+            - name: ACCOUNT_ID
+              value: "419623569149"
+            - name: MS_USUARIO_URL
+              value: "http://alb-cluster-fiap-524154911.us-east-1.elb.amazonaws.com"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackathon-app-agendamentos-service
+  namespace: fiap-pos-tech-hackathon
+spec:
+  type: NodePort
+  selector:
+    app: fiap-postech-hackathon-app-agendamentos
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30008
