@@ -156,15 +156,16 @@ Passo-a-passo:
 > Subindo a App de Agendamentos
 
 1. Abra o projeto no **Repositório da App de Agendamentos**
-2. Al[em das informações de login na AWS para execução da pipeline, preencha também:
-   1. SMTP_MAIL -> E-mail para disparo de notificações pela app
-   2. SMTP_MAIL_PASSWORD -> senha do e-mail para disparo de notificações
-3. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
+2. Para o envio de e-mails, optou-se pelo uso da solução SendGrid. É necessário possuir uma conta na plataforma e uma API KEY gerada.
+3. Além das informações de login na AWS para execução da pipeline, preencha também:
+   1. SMTP_SENDGRID_MAIL -> E-mail do SendGrid para disparo de notificações pela app
+   2. SMTP_SENDGRID_APIKEY -> API key do SendGrid para disparo de notificações
+4. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
     1. Ajuste URI do repositório remoto ECR AWS (accountId e region)
     2. Corrija ACCOUNT_ID mudando o id da conta AWS
     3. Ajuste o endereço de chamada (DNS do loadblancer) para o MS Usuário (MS_USUARIO_URL)
-4. Suba a aplicação via CI/CD do repositório
-5. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
+5. Suba a aplicação via CI/CD do repositório
+6. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
    terminal para acessar seu cluster. Digite ``k9s`` para visualizar e gerenciar pods em execução.
 
 > Subindo a Lambda de Autenticação
