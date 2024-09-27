@@ -2,6 +2,7 @@ package com.fiap.hackathon.common.beans;
 
 import com.fiap.hackathon.common.interfaces.external.EmailSender;
 import com.fiap.hackathon.external.services.email.EmailSenderImpl;
+import com.sendgrid.SendGrid;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,13 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class ExternalBeanDeclaration {
 
     @Bean
-    public EmailSender emailSender() {
-        return new EmailSenderImpl();
+    public EmailSender emailSender(SendGrid sendGrid) {
+        return new EmailSenderImpl(sendGrid);
     }
 
-//    @Bean
-//    public EmailSender emailSender(JavaMailSender javaMailSender) {
-//        return new EmailSenderImpl(javaMailSender);
-//    }
 
 }

@@ -1,10 +1,12 @@
 package com.fiap.hackathon.external.repository;
 
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -23,7 +25,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     private static final String PATIENT_ID_INDEX = "AppointmentPatientIdIndex";
     private static final String DOCTOR_ID_INDEX = "AppointmentDoctorIdIndex";
     private static final String DOCTOR_ID_DATE_INDEX = "AppointmentDoctorIdDateIndex";
-    private static final String ATTRIBUTES = "id, patientId, doctorId, scheduledDate, timeslot, createdAt";
+    private static final String ATTRIBUTES = "id, patientId, doctorId, scheduledDate, timeslot, appointmentStatus, createdAt";
 
     private final DynamoDbClient dynamoDbClient;
 
@@ -164,6 +166,34 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         }
     }
 
+    @Override
+    public void updateStatus(String id, AppointmentStatusEnum status) throws AppointmentUpdateException {
+        final var key = new HashMap<String, AttributeValue>();
+        key.put("id", AttributeValue.builder().s(id).build());
+
+        final var updatedValues = new HashMap<String, AttributeValueUpdate>();
+        updatedValues.put("appointmentStatus",
+                AttributeValueUpdate.builder()
+                        .value(AttributeValue.builder().s(status.name()).build())
+                        .action(AttributeAction.PUT)
+                        .build());
+
+        final var request = UpdateItemRequest.builder()
+                .tableName(TABLE_NAME)
+                .key(key)
+                .attributeUpdates(updatedValues)
+                .build();
+
+        try {
+            dynamoDbClient.updateItem(request);
+            logger.info(UPDATE_ENTITY_SUCCESS, id, TABLE_NAME);
+
+        } catch (Exception e) {
+            logger.error(UPDATE_ENTITY_ERROR, id, e.getMessage());
+            throw new AppointmentUpdateException(ExceptionCodes.APPOINTMENT_09_APPOINTMENT_UPDATE, e.getMessage());
+        }
+    }
+
     private HashMap<String, AttributeValue> convertEntityToItem(Appointment appointment) {
         final var itemValues = new HashMap<String, AttributeValue>();
 
@@ -177,6 +207,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         itemValues.put("patientId", AttributeValue.builder().s(appointment.getPatientId()).build());
         itemValues.put("scheduledDate", AttributeValue.builder().s(appointment.getDate().toString()).build());
         itemValues.put("timeslot", AttributeValue.builder().s(appointment.getTimeslot()).build());
+        itemValues.put("appointmentStatus", AttributeValue.builder().s(appointment.getStatus().name()).build());
         itemValues.put("createdAt", AttributeValue.builder().s(appointment.getCreatedAt().toString()).build());
 
         return itemValues;
@@ -189,6 +220,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 .setPatientId(item.get("patientId").s())
                 .setDate(LocalDate.parse(item.get("scheduledDate").s()))
                 .setTimeslot(item.get("timeslot").s())
+                .setStatus(AppointmentStatusEnum.valueOf(item.get("appointmentStatus").s()))
                 .setCreatedAt(LocalDateTime.parse(item.get("createdAt").s()));
     }
 }

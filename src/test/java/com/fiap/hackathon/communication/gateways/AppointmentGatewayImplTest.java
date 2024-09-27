@@ -1,14 +1,18 @@
 package com.fiap.hackathon.communication.gateways;
 
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
 import com.fiap.hackathon.common.exceptions.custom.CreateEntityException;
 import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
 import com.fiap.hackathon.common.interfaces.datasources.AppointmentRepository;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import com.fiap.hackathon.core.entity.TimeSlotsEnum;
 import com.fiap.hackathon.external.services.users.UsersHTTPClient;
 import com.fiap.hackathon.external.services.users.dtos.DoctorDTO;
 import com.fiap.hackathon.external.services.users.dtos.DoctorTimetableDTO;
 import com.fiap.hackathon.external.services.users.dtos.PatientDTO;
+import io.restassured.internal.common.assertion.Assertion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -262,6 +266,11 @@ class AppointmentGatewayImplTest {
         });
 
         assertEquals("Doctor not found.", exception.getMessage());
+    }
+
+    @Test
+    void updateStatus_ShouldUpdate_WhenStatusIsValid() throws AppointmentUpdateException {
+        Assertions.assertDoesNotThrow(() -> appointmentGateway.updateStatus(anyString(), any(AppointmentStatusEnum.class)));
     }
 
     private Appointment createAppointment() {

@@ -6,6 +6,7 @@ import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.common.interfaces.usecase.AppointmentUseCase;
 import com.fiap.hackathon.common.notifications.DoctorNotification;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import com.fiap.hackathon.core.entity.Doctor;
 import com.fiap.hackathon.core.entity.Patient;
 import jakarta.annotation.Nullable;
@@ -148,6 +149,27 @@ public class AppointmentUseCaseImpl implements AppointmentUseCase {
             return gateway.getAppointmentsByDoctorAndDate(doctorId, date);
 
         return gateway.getAppointmentsByDoctor(doctorId);
+    }
+
+    @Override
+    public void updateStatus(String id, AppointmentStatusEnum status, AppointmentGateway gateway)
+            throws AppointmentUpdateException {
+        try {
+            logger.info("Updating APPOINTMENT with id '{}' to status '{}'", id, status.name());
+
+            final var appointment = gateway.getAppointmentById(id);
+            appointment.validateStatusChange(appointment.getStatus(), status);
+
+            gateway.updateStatus(id, status);
+
+        } catch (Exception ex) {
+            logger.error("Error trying to update APPOINTMENT with id {} to status {}: {}", id, status, ex.getMessage());
+
+            throw new AppointmentUpdateException(
+                    ExceptionCodes.APPOINTMENT_09_APPOINTMENT_UPDATE,
+                    ex.getMessage()
+            );
+        }
     }
 
 }

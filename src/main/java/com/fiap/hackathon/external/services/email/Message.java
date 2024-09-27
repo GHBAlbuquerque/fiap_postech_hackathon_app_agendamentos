@@ -9,13 +9,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Message {
 
-    String to;
+    private String to;
 
-    String from;
+    private String from;
 
-    String subject;
+    private String subject;
 
-    String text;
+    private String text;
 
 
 }

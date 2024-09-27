@@ -1,5 +1,6 @@
 package com.fiap.hackathon.common.dto.response;
 
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,4 +19,5 @@ public class GetAppointmentResponse {
     private LocalDate date;
     private String timeslot;
     private LocalDateTime createdAt;
+    private String status;
 }

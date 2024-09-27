@@ -1,9 +1,13 @@
 package com.fiap.hackathon.core.usecase;
 
-import com.fiap.hackathon.common.exceptions.custom.*;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentConflictException;
+import com.fiap.hackathon.common.exceptions.custom.AppointmentUpdateException;
+import com.fiap.hackathon.common.exceptions.custom.EntitySearchException;
+import com.fiap.hackathon.common.exceptions.custom.ExceptionCodes;
 import com.fiap.hackathon.common.interfaces.gateways.AppointmentGateway;
 import com.fiap.hackathon.common.interfaces.gateways.NotificationGateway;
 import com.fiap.hackathon.core.entity.Appointment;
+import com.fiap.hackathon.core.entity.AppointmentStatusEnum;
 import com.fiap.hackathon.core.entity.Doctor;
 import com.fiap.hackathon.core.entity.Patient;
 import org.junit.jupiter.api.Test;
@@ -98,6 +102,43 @@ class AppointmentUseCaseImplTest {
         assertEquals(appointments, result);
     }
 
+    @Test
+    void shouldUpdateStatusSuccessfully() throws Exception {
+        final var appointment = createAppointment();
+        final var id = "123";
+        final var status = AppointmentStatusEnum.CANCELED;
+
+        when(appointmentGateway.getAppointmentById(id)).thenReturn(appointment);
+        doNothing().when(appointmentGateway).updateStatus(id, status);
+
+        appointmentUseCase.updateStatus(id, status, appointmentGateway);
+
+        verify(appointmentGateway).updateStatus(id, status);
+    }
+
+    @Test
+    void shouldThrowAppointmentUpdateExceptionWhenStatusChangeIsInvalid() throws Exception {
+        final var appointment = createAppointment();
+        final var id = "123";
+        final var status = AppointmentStatusEnum.SCHEDULED;
+
+        when(appointmentGateway.getAppointmentById(id)).thenReturn(appointment);
+
+        assertThrows(AppointmentUpdateException.class, () -> appointmentUseCase.updateStatus(id, status, appointmentGateway));
+    }
+
+    @Test
+    void shouldThrowAppointmentUpdateExceptionWhenGatewayFailsToUpdateStatus() throws Exception {
+        final var appointment = createAppointment();
+        final var id = "123";
+        final var status = AppointmentStatusEnum.COMPLETED;
+
+        when(appointmentGateway.getAppointmentById(id)).thenReturn(appointment);
+        doThrow(RuntimeException.class).when(appointmentGateway).updateStatus(id, status);
+
+        assertThrows(AppointmentUpdateException.class, () -> appointmentUseCase.updateStatus(id, status, appointmentGateway));
+    }
+
 
     private Appointment createAppointment() {
         final var currentDateTime = LocalDateTime.now();
@@ -107,6 +148,7 @@ class AppointmentUseCaseImplTest {
                 .setPatientId("28831743-c53d-451a-89ef-bc464176f2ed")
                 .setDate(LocalDate.now().plusDays(1))
                 .setTimeslot("14:00-15:00")
+                .setStatus(AppointmentStatusEnum.SCHEDULED)
                 .setCreatedAt(currentDateTime);
     }
 

@@ -14,6 +14,25 @@ Integrantes:
 
 <br/>
 
+### 🩻 MVP: Funcionalidades
+
+Neste projeto, buscou-se atender aos requisiros funcionais e não funcionais no descritivo da atividade.
+
+Requisitos Funcionais implementados:
+- Cadastro de Usuário (Médico e Paciente)
+- Autenticaçao de Usuário (Médico e Paciente)
+- Cadastro/Edição de horários disponíveis (Médico)
+- Busca por Médicos
+- Agendamento de Consultas
+- Cancelamento de Consultas
+- Notificação de Consulta marcada (Médico)
+
+Requisitos não-funcionais implementados:
+- Escalabilidade da solução;
+- Validação da consulta solicitada;
+- Validação de conflitos de horários;
+- Concorrência de agendamentos;
+
 ### ✍️ MVP: Premissas
 
 Tratando-se de um MVP, e com tempo de execução limitado (2 semanas), algumas premissas foram criadas para delimitar com precisão o escopo e tornar possível a entrega dos requisitos funcionais e não funcionais sem abrir mão da qualidade do que foi criado.
@@ -35,6 +54,7 @@ São elas:
 Desenho do fluxo da criação de um agendamento e as validações executadas:
 ![](misc/images/sol_hackathon-fluxograma.jpg)
 
+É necessario ser um paciente corretamenre cadastrado e autenticado para agendar consultas.
 <br/>
 
 
@@ -83,7 +103,7 @@ Compõem esta entrega:
 
     * https://github.com/GHBAlbuquerque/fiap_postech_hackathon_app_usuarios
 
-* Repositório da App de Produto
+* Repositório da App de Agendamentos
 
     * https://github.com/GHBAlbuquerque/fiap_postech_hackathon_app_agendamentos
 
@@ -113,7 +133,7 @@ Passo-a-passo:
 1. Obtenha credenciais de aws_access_key_id, aws_secret_access_key e aws_session_token da sua conta na AWS Academy ou na
    AWS.
 2. Altere credenciais nos secrets para actions dos repositórios
-3. Altere credenciais no arquivo .credentials na pasta .aws no seu computador caso deseje rodar a aplicação localmente
+3. Altere credenciais no arquivo credentials na pasta .aws no seu computador caso deseje rodar a aplicação localmente
    ou usar o aws cli
 
 <br/>
@@ -156,15 +176,16 @@ Passo-a-passo:
 > Subindo a App de Agendamentos
 
 1. Abra o projeto no **Repositório da App de Agendamentos**
-2. Al[em das informações de login na AWS para execução da pipeline, preencha também:
-   1. SMTP_MAIL -> E-mail para disparo de notificações pela app
-   2. SMTP_MAIL_PASSWORD -> senha do e-mail para disparo de notificações
-3. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
+2. Para o envio de e-mails, optou-se pelo uso da solução SendGrid. É necessário possuir uma conta na plataforma, com Sender verificado, e uma API KEY gerada.
+3. Além das informações de login na AWS para execução da pipeline, preencha também:
+   1. SMTP_SENDGRID_MAIL -> E-mail do SendGrid para disparo de notificações pela app
+   2. SMTP_SENDGRID_APIKEY -> API key do SendGrid para disparo de notificações
+4. No arquivo infra-kubernetes/manifest.yaml, no Deployment, em spec.templates.spec.containers.image:
     1. Ajuste URI do repositório remoto ECR AWS (accountId e region)
     2. Corrija ACCOUNT_ID mudando o id da conta AWS
     3. Ajuste o endereço de chamada (DNS do loadblancer) para o MS Usuário (MS_USUARIO_URL)
-4. Suba a aplicação via CI/CD do repositório
-5. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
+5. Suba a aplicação via CI/CD do repositório
+6. (opcional) Use o comando ``aws eks --region us-east-1  update-kubeconfig --name eks_cluster_fiap_postech`` no
    terminal para acessar seu cluster. Digite ``k9s`` para visualizar e gerenciar pods em execução.
 
 > Subindo a Lambda de Autenticação
@@ -204,7 +225,7 @@ Passo-a-passo:
 2. Vá para o site 'https://editor.swagger.io/' e cole o json copiado na esquerda
 3. Veja os endpoints disponíveis para a API
 4. Para realizar chamadas aos endpoints http do gateway, utilize a 'Invoke URL' e os seguintes headers:
-    1. user_email -> valor cadastrado previamente: 93678719023
+    1. user_email -> valor cadastrado previamente: aneleh.annavoig@gmail.com
     2. user_pword -> valor cadastrado previamente: FIAPauth123_
 
 <br/>
@@ -218,6 +239,17 @@ Passo-a-passo:
 5. Utilize o e-mail e senha cadastrados para fazer solicitações como orientado acima
 
 <br/>
+
+
+### 💡 MVP: Evolução
+
+Feature não contempladas neste MVP, que poderiam ser feitas como melhorias na evolução:
+
+1) Agendamento de consultas com tempo diferente de 1h (ex: 0h30, 1h30)
+2) Notificação de Paciente
+3) Notificação para alterações de status das consultas
+4) Alterações de dados de Usuário (Pacientes e Médicos)
+5) Exclusão de conta de Usuário (Pacientes e Médicos)
 
 ## Autores
 

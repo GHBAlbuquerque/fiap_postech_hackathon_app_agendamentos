@@ -10,8 +10,8 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-  SMTP_MAIL: ${{ secrets.SMTP_MAIL }}
-  SMTP_MAIL_PASSWORD: ${{ secrets.SMTP_MAIL_PASSWORD }}
+  SMTP_SENDGRID_MAIL: ${{ secrets.SMTP_SENDGRID_MAIL }}
+  SMTP_SENDGRID_APIKEY: ${{ secrets.SMTP_SENDGRID_APIKEY }}
 
 jobs:
   unit-test:
@@ -91,9 +91,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
         run: |
-          docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN --build-arg SMTP_MAIL=SMTP_MAIL --build-arg SMTP_MAIL_PASSWORD=SMTP_MAIL_PASSWORD -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile . 
+          docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN --build-arg SMTP_SENDGRID_MAIL=$SMTP_SENDGRID_MAIL --build-arg SMTP_SENDGRID_APIKEY=$SMTP_SENDGRID_APIKEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile . 
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN --build-arg SMTP_MAIL=SMTP_MAIL --build-arg SMTP_MAIL_PASSWORD=SMTP_MAIL_PASSWORD -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f Dockerfile . 
+          docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN --build-arg SMTP_SENDGRID_MAIL=$SMTP_SENDGRID_MAIL --build-arg SMTP_SENDGRID_APIKEY=$SMTP_SENDGRID_APIKEY -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f Dockerfile . 
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Update kube config
