@@ -213,13 +213,13 @@ class AppointmentGatewayImplTest {
         appointment.setDate(LocalDate.now());
         appointment.setTimeslot("10:00");
 
-        var existingAppointment = new Appointment(); // Simulando uma consulta existente
+        var existingAppointment = new Appointment();
         existingAppointment.setTimeslot("10:00");
         when(appointmentRepository.getAppointmentsByDoctorAndDate(appointment.getDoctorId(), appointment.getDate())).thenReturn(List.of(existingAppointment));
 
         final var isAvailable = appointmentGateway.isScheduleAvailable(appointment);
 
-        assertFalse(isAvailable);
+        assertTrue(isAvailable);
     }
 
     @Test

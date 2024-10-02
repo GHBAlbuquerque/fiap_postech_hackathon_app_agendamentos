@@ -98,7 +98,12 @@ public class AppointmentGatewayImpl implements AppointmentGateway {
 
         final var doctorTimetable = repository.getAppointmentsByDoctorAndDate(doctorId, date);
 
-        return doctorTimetable.stream().filter(ap -> timeslot.equals(ap.getTimeslot())).findAny().isEmpty();
+        return doctorTimetable.stream()
+                .filter(ap ->
+                        timeslot.equals(ap.getTimeslot()) &&
+                                AppointmentStatusEnum.SCHEDULED.equals(ap.getStatus()))
+                .findAny()
+                .isEmpty();
     }
 
     @Override
